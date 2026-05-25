@@ -7,6 +7,8 @@ import com.example.EmployeeManagementSystem.Service.EmployeeService;
 import jakarta.persistence.EntityListeners;
 import jakarta.validation.Valid;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,9 +27,20 @@ public class EmployeeController {
     }
 
     @GetMapping("/allEmp")
-    public ResponseEntity<List<ResponseDTO>> getAllEmployee(){
+    public ResponseEntity<List<ResponseDTO>> getAllEmployee(@RequestParam(required = false,defaultValue = "1")int page,
+                                                            @RequestParam(required = false,defaultValue = "5")int pageSize,
+                                                            @RequestParam(required = false,defaultValue = "id")String sortBy,
+                                                            @RequestParam(required = false,defaultValue = "ASC")String sortDir,
+                                                            @RequestParam(required = false)String search){
 
-        return new ResponseEntity<>(employeeService.getAllEmployee(), HttpStatus.OK);
+        Sort sort ;
+        if(sortDir.equals("ASC")){
+            sort = Sort.by(sortBy).ascending();
+        }
+        else
+        sort = Sort.by(sortBy).descending();
+
+        return new ResponseEntity<>(employeeService.getAllEmployee(PageRequest.of(page-1,pageSize,sort),search), HttpStatus.OK);
     }
 
     @GetMapping("/byId")

@@ -5,6 +5,9 @@ import com.example.EmployeeManagementSystem.DTO.ResponseDTO;
 import com.example.EmployeeManagementSystem.Entity.Employee;
 import com.example.EmployeeManagementSystem.Exception.MyOwnException;
 import com.example.EmployeeManagementSystem.Repository.EmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +32,17 @@ public class EmployeeService {
         );
     }
 
-    public List<ResponseDTO> getAllEmployee() {
+    public List<ResponseDTO> getAllEmployee(Pageable pageable, String search) {
 
+        Page<Employee> page=null;
         List<ResponseDTO> list = new ArrayList<>();
 
-        for(Employee e:employeeRepository.findAll()){
+        if(search==null || search.isEmpty())
+            page= employeeRepository.findAll(pageable);
+        else
+            page=employeeRepository.findByempName(search,pageable);
+
+        for(Employee e:page.getContent()){
             list.add(mapToResponseDTO(e));
         }
         return list;
