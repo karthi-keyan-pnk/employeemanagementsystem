@@ -2,11 +2,8 @@ package com.example.EmployeeManagementSystem.Controller;
 
 import com.example.EmployeeManagementSystem.DTO.RequestDTO;
 import com.example.EmployeeManagementSystem.DTO.ResponseDTO;
-import com.example.EmployeeManagementSystem.Exception.MyOwnException;
 import com.example.EmployeeManagementSystem.Service.EmployeeService;
-import jakarta.persistence.EntityListeners;
 import jakarta.validation.Valid;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
